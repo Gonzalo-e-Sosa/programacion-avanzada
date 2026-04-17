@@ -1,0 +1,38 @@
+target/
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# NetBeans
+nbproject/private/
+
+# VS Code Java
+.vscode-test/
+
+# Temp files
+*.tmp
+*.swp
+*.swo
