@@ -5,17 +5,14 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 public class SumaNaturalesTest {
-
-    @Test
-    public void iterativaReturnsZeroForNonPositiveValues() {
-        assertEquals(0, SumaNaturales.iterativa(0));
-        assertEquals(0, SumaNaturales.iterativa(-5));
+    @Test(expected = IllegalArgumentException.class)
+    public void iterativaThrowsExceptionForNonPositiveValues() {
+        SumaNaturales.iterativa(0);
     }
 
-    @Test
-    public void recursivaReturnsZeroForNonPositiveValues() {
-        assertEquals(0, SumaNaturales.recursiva(0));
-        assertEquals(0, SumaNaturales.recursiva(-5));
+    @Test(expected = IllegalArgumentException.class)
+    public void recursivaThrowsExceptionForNonPositiveValues() {
+        SumaNaturales.recursiva(0);
     }
 
     @Test
