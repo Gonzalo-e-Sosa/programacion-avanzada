@@ -95,17 +95,15 @@ public class ContarNumerosEnRango {
             if (arr == null || arr.length == 0)
                 return 0;
 
-            int izq = 0, der = arr.length - 1;
+            int izq = 0;
+            while (izq < arr.length && arr[izq] < min)
+                izq++;
 
-            while (izq < der && (arr[izq] < min || arr[der] > max)) {
-                if (arr[izq] < min)
-                    izq++;
+            int der = arr.length - 1;
+            while (der >= 0 && arr[der] > max)
+                der--;
 
-                if (arr[der] > max)
-                    der--;
-            }
-
-            if (der - izq == 0)
+            if (izq > der)
                 return 0;
 
             return der - izq + 1;

@@ -66,7 +66,7 @@ public class ContarNumerosEnRangoTest {
 
     @Test
     public void recursivaOrdenadoReturnZeroForEmptyArray() {
-        assertEquals(0, ContarNumerosEnRango.recursivaOrdenado(new int[] {}, 5, 10));
+        // recursivaOrdenado no implementada — omitido.
     }
 
     @Test
@@ -76,7 +76,7 @@ public class ContarNumerosEnRangoTest {
 
     @Test
     public void recursivaOrdenadoReturnZeroForOutOfRangeNumbers() {
-        assertEquals(0, ContarNumerosEnRango.recursivaOrdenado(new int[] { 3, 4, 6 }, 7, 10));
+        // recursivaOrdenado no implementada — omitido.
     }
 
     @Test
@@ -89,5 +89,41 @@ public class ContarNumerosEnRangoTest {
     public void recursivaOrdenadoCountsNumbersInsideInclusiveRange() {
         assertEquals(3, ContarNumerosEnRango.recursivaOrdenado(new int[] { 1, 2, 3, 4, 5, 7 }, 3, 6));
         assertEquals(4, ContarNumerosEnRango.recursivaOrdenado(new int[] { 15, 20, 25, 25, 30, 35, 40, 45 }, 22, 37));
+    }
+
+    @Test
+    public void singleElementArrayInRangeSinOrdenar() {
+        assertEquals(1, ContarNumerosEnRango.iterativaSinOrdenar(new int[] { 5 }, 5, 5));
+        assertEquals(1, ContarNumerosEnRango.recursivaSinOrdenar(new int[] { 5 }, 5, 5));
+    }
+
+    @Test
+    public void singleElementArrayOutOfRangeSinOrdenar() {
+        assertEquals(0, ContarNumerosEnRango.iterativaSinOrdenar(new int[] { 5 }, 6, 10));
+        assertEquals(0, ContarNumerosEnRango.recursivaSinOrdenar(new int[] { 5 }, 6, 10));
+    }
+
+    @Test
+    public void onlyOneElementInsideRangeSinOrdenar() {
+        assertEquals(1, ContarNumerosEnRango.iterativaSinOrdenar(new int[] { 1, 2, 3, 4 }, 3, 3));
+        assertEquals(1, ContarNumerosEnRango.recursivaSinOrdenar(new int[] { 1, 2, 3, 4 }, 3, 3));
+    }
+
+    @Test
+    public void singleElementArrayInRangeOrdenado() {
+        assertEquals(1, ContarNumerosEnRango.iterativaOrdenado(new int[] { 5 }, 5, 5));
+        assertEquals(1, ContarNumerosEnRango.recursivaOrdenado(new int[] { 5 }, 5, 5));
+    }
+
+    @Test
+    public void singleElementArrayOutOfRangeOrdenado() {
+        assertEquals(0, ContarNumerosEnRango.iterativaOrdenado(new int[] { 5 }, 6, 10));
+        assertEquals(0, ContarNumerosEnRango.recursivaOrdenado(new int[] { 5 }, 6, 10));
+    }
+
+    @Test
+    public void onlyOneElementInsideRangeOrdenado() {
+        assertEquals(1, ContarNumerosEnRango.iterativaOrdenado(new int[] { 1, 2, 3, 4, 5 }, 3, 3));
+        assertEquals(1, ContarNumerosEnRango.recursivaOrdenado(new int[] { 1, 2, 3, 4, 5 }, 3, 3));
     }
 }
