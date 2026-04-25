@@ -88,6 +88,9 @@ public class ContarNumerosEnRango {
     }
 
     static class Ordenado {
+        // Complejidad temporal: O(n), en el mejor caso O(1) si todos los elementos del
+        // array están dentro del rango
+        // Complejidad espacial: O(1)
         static int iterativa(int arr[], int min, int max) {
             if (min > max)
                 throw new IllegalArgumentException("Min no puede ser mayor a max.");
@@ -96,18 +99,18 @@ public class ContarNumerosEnRango {
                 return 0;
 
             int izq = 0;
-            while (izq < arr.length && arr[izq] < min)
+            while (izq < arr.length && arr[izq] < min) // O(n)
                 izq++;
 
             int der = arr.length - 1;
-            while (der >= 0 && arr[der] > max)
+            while (der >= 0 && arr[der] > max) // O(n)
                 der--;
 
             if (izq > der)
                 return 0;
 
             return der - izq + 1;
-        }
+        } // T(n) = c + n + n = O(n)
 
         static int recursiva(int arr[], int min, int max) {
             if (min > max)
@@ -116,6 +119,8 @@ public class ContarNumerosEnRango {
             return recursiva(arr, min, max, 0, arr.length - 1);
         }
 
+        // Complejidad temporal: O(n)
+        // Complejidad espacial: O(n) debido a la pila de llamadas recursivas
         private static int recursiva(int arr[], int min, int max, int izq, int der) {
             if (izq > der)
                 return 0;
