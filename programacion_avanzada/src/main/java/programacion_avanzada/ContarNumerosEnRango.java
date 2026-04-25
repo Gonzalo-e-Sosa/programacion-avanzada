@@ -44,45 +44,56 @@ public class ContarNumerosEnRango {
     }
 
     static class NoOrdenado {
+        // Complejidad temporal: O(n)
+        // Complejidad espacial: O(1)
         static int iterativa(int arr[], int min, int max) {
-            if (min > max)
+            if (min > max) // O(1)
                 throw new IllegalArgumentException("Min no puede ser mayor a max.");
 
-            int acum = 0;
+            if (arr == null || arr.length == 0) // O(1)
+                return 0;
 
+            int acum = 0; // O(1)
+
+            // O(n)
             for (int i = 0; i < arr.length; i++) {
-                if (arr[i] >= min && arr[i] <= max)
+                if (arr[i] >= min && arr[i] <= max) // O(1)
                     acum++;
             }
 
-            return acum;
-        }
+            return acum; // O(1)
+        } // T(n) = c + n = O(n)
 
+        // Complejidad temporal: O(n)
+        // Complejidad espacial: O(n) debido a la pila de llamadas recursivas
         static int recursiva(int arr[], int min, int max) {
-            if (min > max)
+            if (min > max) // O(1)
                 throw new IllegalArgumentException("Min no puede ser mayor a max.");
 
-            if (arr.length == 0)
+            if (arr == null || arr.length == 0) // O(1)
                 return 0;
 
-            return recursiva(arr, min, max, 0);
+            return recursiva(arr, min, max, arr.length - 1);
         }
 
         private static int recursiva(int arr[], int min, int max, int n) {
-            if (n >= arr.length)
+            if (n < 0) // O(1)
                 return 0;
 
-            if (arr[n] >= min && arr[n] <= max)
-                return 1 + recursiva(arr, min, max, n + 1);
+            if (arr[n] >= min && arr[n] <= max) // O(1)
+                return 1 + recursiva(arr, min, max, n - 1); // O(1) + T(n - 1)
 
-            return recursiva(arr, min, max, n + 1);
-        }
+            return recursiva(arr, min, max, n - 1); // T(n - 1)
+        } // T(n) = c + T(n - 1) = T(0) + nc = O(n)
     }
 
     static class Ordenado {
         static int iterativa(int arr[], int min, int max) {
             if (min > max)
                 throw new IllegalArgumentException("Min no puede ser mayor a max.");
+
+            if (arr == null || arr.length == 0)
+                return 0;
 
             int izq = 0, der = arr.length - 1;
 
