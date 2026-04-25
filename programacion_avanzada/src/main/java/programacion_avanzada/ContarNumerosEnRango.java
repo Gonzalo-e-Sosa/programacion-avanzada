@@ -84,26 +84,41 @@ public class ContarNumerosEnRango {
             if (min > max)
                 throw new IllegalArgumentException("Min no puede ser mayor a max.");
 
-            int i = 0, j = arr.length - 1;
+            int izq = 0, der = arr.length - 1;
 
-            while (i < j && (arr[i] < min || arr[j] > max)) {
-                if (arr[i] < min)
-                    i++;
+            while (izq < der && (arr[izq] < min || arr[der] > max)) {
+                if (arr[izq] < min)
+                    izq++;
 
-                if (arr[j] > max)
-                    j--;
+                if (arr[der] > max)
+                    der--;
             }
 
-            return j - i + 1;
+            if (der - izq == 0)
+                return 0;
+
+            return der - izq + 1;
         }
 
         static int recursiva(int arr[], int min, int max) {
             if (min > max)
                 throw new IllegalArgumentException("Min no puede ser mayor a max.");
 
-            throw new UnsupportedOperationException("No se implementó la versión recursiva para array ordenado.");
+            return recursiva(arr, min, max, 0, arr.length - 1);
         }
 
+        private static int recursiva(int arr[], int min, int max, int izq, int der) {
+            if (izq > der)
+                return 0;
+
+            if (arr[izq] < min)
+                return recursiva(arr, min, max, izq + 1, der);
+
+            if (arr[der] > max)
+                return recursiva(arr, min, max, izq, der - 1);
+
+            return der - izq + 1;
+        }
     }
 
 }
