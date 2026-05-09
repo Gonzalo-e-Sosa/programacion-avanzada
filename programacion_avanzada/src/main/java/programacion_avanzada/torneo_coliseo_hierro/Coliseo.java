@@ -39,7 +39,6 @@ El torneo continúa hasta que sólo quede un equipo en pie, con uno o más gladi
 */
 
 public class Coliseo {
-
     private PriorityQueue<Guerrero> heap;
     private PriorityQueue<Equipo> equipos;
 
@@ -58,7 +57,6 @@ public class Coliseo {
 
     public Guerrero comenzarTorneo() {
         while (heap.size() > 1) {
-
             Guerrero g1 = heap.poll(); // Saco al más fuerte
             Guerrero g2 = heap.poll(); // Saco al segundo más fuerte
 
@@ -81,32 +79,30 @@ public class Coliseo {
 
     public Equipo comenzarTorneoPorEquipos() {
         while (equipos.size() > 1) {
-
             Equipo e1 = equipos.poll(); // Saco al equipo más fuerte
             Equipo e2 = equipos.poll(); // Saco al segundo equipo más fuerte
 
             Guerrero g1 = e1.getGuerreroMasFuerte();
             Guerrero g2 = e2.getGuerreroMasFuerte();
 
+            // Si alguno de los equipos no tiene guerreros vivos, lo dejamos fuera del
+            // torneo
             if (g1 == null || g2 == null) {
-                // Si alguno de los equipos no tiene guerreros vivos, lo dejamos fuera del
-                // torneo
                 if (g1 != null) {
                     equipos.add(e1);
                 }
                 if (g2 != null) {
                     equipos.add(e2);
                 }
-                continue;
-            }
+            } else {
+                g1.pelear(g2);
 
-            g1.pelear(g2);
-
-            if (e1.estaVivo()) {
-                equipos.add(e1);
-            }
-            if (e2.estaVivo()) {
-                equipos.add(e2);
+                if (e1.estaVivo()) {
+                    equipos.add(e1);
+                }
+                if (e2.estaVivo()) {
+                    equipos.add(e2);
+                }
             }
         }
 
