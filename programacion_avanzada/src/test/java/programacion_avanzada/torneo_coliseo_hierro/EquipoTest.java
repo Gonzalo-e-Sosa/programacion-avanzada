@@ -35,8 +35,8 @@ public class EquipoTest {
         Equipo e1 = new Equipo(new Guerrero(5, "G1"));
         Equipo e2 = new Equipo(new Guerrero(7, "G2"));
 
-        assertTrue(e1.compareTo(e2) < 0);
-        assertTrue(e2.compareTo(e1) > 0);
+        assertTrue(e1.compareTo(e2) > 0);
+        assertTrue(e2.compareTo(e1) < 0);
     }
 
 }
