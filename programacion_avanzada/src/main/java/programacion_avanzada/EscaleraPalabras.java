@@ -67,9 +67,10 @@ public class EscaleraPalabras {
             String v = cola.poll();
             ArrayList<String> combinaciones = generarCombinaciones(v);
 
-            // Se puede quitar este break?
             if (v.equals(endWord)) {
-                break;
+                List<String> camino = reconstruirCamino(padre, endWord);
+                diccionario.clear();
+                return camino;
             }
 
             for (String vecino : obtenerVecinos(v, combinaciones)) {
@@ -136,6 +137,8 @@ public class EscaleraPalabras {
             camino.add(sgt);
             sgt = m.get(sgt);
         }
+
+        Collections.reverse(camino);
 
         return camino;
     }

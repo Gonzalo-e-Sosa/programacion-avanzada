@@ -36,8 +36,6 @@ public class EscaleraPalabrasTest {
                 new String[] { "hot", "dot", "dog", "lot", "log", "cog" },
                 "hit", "cog");
 
-        Collections.reverse(result); // Para ordenar correctamente
-
         assertArrayEquals(
                 new String[] { "hit", "hot", "dot", "dog", "cog" }, result.toArray());
     }
