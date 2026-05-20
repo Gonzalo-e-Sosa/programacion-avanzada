@@ -4,7 +4,10 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import java.lang.reflect.Method;
+import java.text.CollationElementIterator;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -20,6 +23,23 @@ public class EscaleraPalabrasTest {
         java.lang.reflect.Field diccionarioField = EscaleraPalabras.class.getDeclaredField("diccionario");
         diccionarioField.setAccessible(true);
         diccionario = (Set<String>) diccionarioField.get(escalera);
+    }
+
+    // ==================== Pruebas para BFS ==================================
+
+    @Test
+    public void testBFS() throws Exception {
+        Method bfs = EscaleraPalabras.class.getDeclaredMethod("bfs", String[].class, String.class, String.class);
+
+        bfs.setAccessible(true);
+        ArrayList<String> result = (ArrayList<String>) bfs.invoke(escalera,
+                new String[] { "hot", "dot", "dog", "lot", "log", "cog" },
+                "hit", "cog");
+
+        Collections.reverse(result); // Para ordenar correctamente
+
+        assertArrayEquals(
+                new String[] { "hit", "hot", "dot", "dog", "cog" }, result.toArray());
     }
 
     // ==================== Pruebas para cargarDiccionario ====================

@@ -1,6 +1,8 @@
 package programacion_avanzada;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -41,32 +43,47 @@ Restricciones
 - Todas las palabras en wordList son únicas
 */
 public class EscaleraPalabras {
-    private Map<String, ArrayList<String>> listaAdyacencias = new HashMap<>(); // se usa lista de adyacencias porque el
-                                                                               // grafo es poco poblado no llega a tener
-                                                                               // aristas de V * (V - 1) / 2
     private Set<String> diccionario = new HashSet<>();
+
+    public int solucion(String[] wordList, String beginWord, String endWord) {
+        return bfs(wordList, beginWord, endWord).size();
+    }
 
     private List<String> bfs(String[] wordList, String beginWord, String endWord) {
         Queue<String> cola = new LinkedList<>();
         Set<String> visitados = new HashSet<>();
+        Map<String, String> padre = new HashMap<>();
+
         cola.add(beginWord);
         visitados.add(beginWord);
+
         cargarDiccionario(wordList);
 
-        // Falta preguntar si llegue a endWord
+        if (!diccionario.contains(endWord)) {
+            return new ArrayList<>(); // Sin camino posible
+        }
+
         while (!cola.isEmpty()) {
             String v = cola.poll();
             ArrayList<String> combinaciones = generarCombinaciones(v);
+
+            // Se puede quitar este break?
+            if (v.equals(endWord)) {
+                break;
+            }
 
             for (String vecino : obtenerVecinos(v, combinaciones)) {
                 if (!visitados.contains(vecino)) {
                     visitados.add(vecino);
                     cola.add(vecino);
+                    padre.put(vecino, v);
                 }
             }
         }
 
-        return new ArrayList<>();
+        diccionario.clear();
+
+        return reconstruirCamino(padre, endWord);
     }
 
     private void cargarDiccionario(String[] palabras) {
@@ -109,5 +126,17 @@ public class EscaleraPalabras {
         }
 
         return vecinos;
+    }
+
+    private List<String> reconstruirCamino(Map<String, String> m, String n) {
+        ArrayList<String> camino = new ArrayList<>();
+        String sgt = n;
+
+        while (sgt != null) {
+            camino.add(sgt);
+            sgt = m.get(sgt);
+        }
+
+        return camino;
     }
 }
