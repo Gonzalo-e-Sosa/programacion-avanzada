@@ -1,7 +1,6 @@
 package programacion_avanzada;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -45,20 +44,21 @@ public class EscaleraPalabras {
     private Map<String, ArrayList<String>> listaAdyacencias = new HashMap<>(); // se usa lista de adyacencias porque el
                                                                                // grafo es poco poblado no llega a tener
                                                                                // aristas de V * (V - 1) / 2
-    private Map<String, Integer> wordMap = new HashMap<>();
+    private Set<String> diccionario = new HashSet<>();
 
     private List<String> bfs(String[] wordList, String beginWord, String endWord) {
         Queue<String> cola = new LinkedList<>();
         Set<String> visitados = new HashSet<>();
         cola.add(beginWord);
         visitados.add(beginWord);
-        llenarMapa(wordList); // wordMap: Mapea palabra con su indice
+        cargarDiccionario(wordList);
 
+        // Falta preguntar si llegue a endWord
         while (!cola.isEmpty()) {
             String v = cola.poll();
-            generarCombinaciones(v);
+            ArrayList<String> combinaciones = generarCombinaciones(v);
 
-            for (String vecino : obtenerVecinos(v)) {
+            for (String vecino : obtenerVecinos(v, combinaciones)) {
                 if (!visitados.contains(vecino)) {
                     visitados.add(vecino);
                     cola.add(vecino);
@@ -69,13 +69,13 @@ public class EscaleraPalabras {
         return new ArrayList<>();
     }
 
-    private void llenarMapa(String[] palabras) {
+    private void cargarDiccionario(String[] palabras) {
         for (int i = 0; i < palabras.length; i++) {
-            wordMap.put(palabras[i], i);
+            diccionario.add(palabras[i]);
         }
     }
 
-    private void generarCombinaciones(String palabra) {
+    private ArrayList<String> generarCombinaciones(String palabra) {
         char[] alfabeto = new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
                 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 
@@ -94,24 +94,20 @@ public class EscaleraPalabras {
             palabraArray[i] = letraOriginal;
         }
 
-        listaAdyacencias.put(palabra, combinaciones);
+        return combinaciones;
     }
 
-    private List<String> obtenerVecinos(String palabra) {
-        if (listaAdyacencias.containsKey(palabra)) {
-            List<String> posiblesVecinos = listaAdyacencias.get(palabra);
-            List<String> vecinos = new ArrayList<>();
+    private List<String> obtenerVecinos(String palabra, List<String> posiblesVecinos) {
+        List<String> vecinos = new ArrayList<>();
 
-            // Antes de retornar vecinos, filtrarlos para solo obtener aquellos presentes en
-            // mi wordMap
-            for (String posibleVecino : posiblesVecinos) {
-                if (wordMap.containsKey(posibleVecino)) {
-                    vecinos.add(posibleVecino);
-                }
+        // Antes de retornar vecinos, filtrarlos para solo obtener aquellos presentes en
+        // mi diccionario
+        for (String posibleVecino : posiblesVecinos) {
+            if (diccionario.contains(posibleVecino)) {
+                vecinos.add(posibleVecino);
             }
-
-            return vecinos;
         }
-        throw new Error("No hay vecinos para: " + palabra);
+
+        return vecinos;
     }
 }
