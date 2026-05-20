@@ -2,6 +2,7 @@ package programacion_avanzada;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 
 /*
@@ -45,31 +46,55 @@ Los ingenieros disponen de los siguientes cañones:
 Salida esperada
 Cañones activados: C1, C2 y C4
 Número mínimo: 3 cañones activados
+
+C1: [-1, 5] 
+C2: [2, 12]
+C3: [10, 18]
+C4: [11, 23]
+C5: [18, 22]
+C6: [4, 6]
+
+Ordenar por alcance izquierda -> [C5, C4, C3, C6, C2, C1]
+
+C5 es candidato pero como tiene parte negativa 20 - 22 -> -2 se busca otro candidato
+C4 es mejor candidato ya que a pesar de tener parte negativa 20 - 23 -> -3 tiene un alcance izquierda mayor 
+
 */
 
 public class DefensaMuroRose {
-    List<Cannon> cannons = new ArrayList<>();
+    ArrayList<Cannon> cannons = new ArrayList<>();
 
     // Ordenar por mayores alcances a la izquierda
-    // Seleccionar el de mayor alcance
+    // Seleccionar el de mayor alcance izquierda
     // Fijarse las posiciones que faltan para rellenar
-    public void defenderMuro(int l, int r /* [L, R] */) {
-        List<Cannon> result = new ArrayList<>();
+    public void defenderMuro(int L, int R /* [L, R] */) {
+        ArrayList<Cannon> seleccionados = new ArrayList<>();
 
         ordenarAlcances();
 
-        int actual = l;
+        int actual = L;
+        int j = 0;
 
-        // Dado el punto actual, elegir el mejor cañón disponible
-        // actual = L, el punto del muro que todavía necesito cubrir
-        for (Cannon cannon : cannons) {
-            if (actual >= cannon.alcanceIzquierda() && actual + cannon.alcanceDerecha() < r) {
-                actual = cannon.alcanceDerecha();
-                result.add(cannon);
+        while (actual < R) {
+            int mejorFin = actual;
+            Cannon mejorCañon = null;
+
+            while (j < cannons.size() && cannons.get(j).alcanceIzquierda() <= actual) {
+                if (cannons.get(j).alcanceDerecha() > mejorFin) {
+                    mejorFin = cannons.get(j).alcanceDerecha();
+                    mejorCañon = cannons.get(j);
+                }
+                j++;
             }
+
+            if (mejorCañon == null)
+                throw new Error("No se puede cubrir el muro.");
+
+            seleccionados.add(mejorCañon);
+            actual = mejorFin;
         }
 
-        result.forEach(c -> System.out.println(c));
+        seleccionados.forEach(c -> System.out.println(c));
     }
 
     public void agregarCannon(Cannon c) {
@@ -77,18 +102,14 @@ public class DefensaMuroRose {
     }
 
     public void ordenarAlcances() {
-        this.cannons.sort(new Comparator<Cannon>() {
-            public int compare(Cannon arg0, Cannon arg1) {
-                return arg0.alcanceIzquierda() - arg1.alcanceIzquierda();
-            };
-        });
+        this.cannons.sort(Comparator.naturalOrder());
     }
 
     public void mostrarCannons() {
         this.cannons.forEach(c -> System.out.println(c));
     }
 
-    public class Cannon {
+    public class Cannon implements Comparable<Cannon> {
         int numero;
         int posicion;
         int alcance;
@@ -100,11 +121,16 @@ public class DefensaMuroRose {
         }
 
         int alcanceIzquierda() {
-            return this.posicion - alcance < 0 ? 0 : this.posicion - alcance;
+            return this.posicion - alcance;
         }
 
         int alcanceDerecha() {
             return this.posicion + alcance;
+        }
+
+        @Override
+        public int compareTo(Cannon arg0) {
+            return this.alcanceIzquierda() - arg0.alcanceIzquierda();
         }
 
         @Override
